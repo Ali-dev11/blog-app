@@ -28,7 +28,7 @@ const PostDetails = () => {
 };
 export default PostDetails;
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }) {
     const posts = (await getPosts()) || []
   
     return {
