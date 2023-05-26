@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 
+
 const CommentsForm = ({slug}) => {
 	const [error, setError] = useState(false)
 	const [localStorage, setLocalStorage] = useState(null)
@@ -10,8 +11,34 @@ const CommentsForm = ({slug}) => {
   const storeDataEl = useRef()
 
   const handleCommentSubmission = () => {
+    setError(false)
 
+    const { value: comment } = commentEl.current
+    const { value: name } = commentEl.current
+    const { value: email } = commentEl.current
+    const { checked: storeData } = storeDataEl.current
+
+    if(!comment || !name || !email) {
+      setError(true)
+      return
+    }
+
+    const commentObj = {
+			name,
+			email,
+			comment,
+			slug,
+		}
+
+    if(storeData){
+      localStorage.setItem('name', name)
+      localStorage.setItem('email', email)
+    }else{ 
+      localStorage.removeItem('name', name)
+      localStorage.removeItem('email', email)
+    }
   }
+
 
 	return (
 		<div className='bg-white shadow-lg rounded-lg p-8 pb-12 mb-8'>
