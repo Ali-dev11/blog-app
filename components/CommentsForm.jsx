@@ -1,62 +1,62 @@
 import React, {useState, useEffect, useRef} from 'react'
 
-import { submitComment } from '@/services'
+import {submitComment} from '@/services'
 
 const CommentsForm = ({slug}) => {
 	const [error, setError] = useState(false)
 	const [localStorage, setLocalStorage] = useState(null)
 	const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 	const commentEl = useRef()
-  const nameEl = useRef()
-  const emailEl = useRef()
-  const storeDataEl = useRef()
+	const nameEl = useRef()
+	const emailEl = useRef()
+	const storeDataEl = useRef()
 
-  useEffect(() => {
-    setLocalStorage(window.localStorage);
-    const initalFormData = {
-      name: window.localStorage.getItem('name'),
-      email: window.localStorage.getItem('email'),
-      storeData: window.localStorage.getItem('name') || window.localStorage.getItem('email'),
-    };
-  }, []);
+	useEffect(() => {
+		setLocalStorage(window.localStorage)
+		const initalFormData = {
+			name: window.localStorage.getItem('name'),
+			email: window.localStorage.getItem('email'),
+			storeData:
+				window.localStorage.getItem('name') ||
+				window.localStorage.getItem('email'),
+		}
+	}, [])
 
-  const handleCommentSubmission = () => {
-    setError(false)
+	const handleCommentSubmission = () => {
+		setError(false)
 
-    const { value: comment } = commentEl.current
-    const { value: name } = commentEl.current
-    const { value: email } = commentEl.current
-    const { checked: storeData } = storeDataEl.current
+		const {value: comment} = commentEl.current
+		const {value: name} = commentEl.current
+		const {value: email} = commentEl.current
+		const {checked: storeData} = storeDataEl.current
 
-    if(!comment || !name || !email) {
-      setError(true)
-      return
-    }
+		if (!comment || !name || !email) {
+			setError(true)
+			return
+		}
 
-    const commentObj = {
+		const commentObj = {
 			name,
 			email,
 			comment,
 			slug,
 		}
 
-    if(storeData){
-      window.localStorage.setItem('name', name)
-      window.localStorage.setItem('email', email)
-    }else{ 
-		window.localStorage.removeItem('name', name)
-		window.localStorage.removeItem('email', email)
-    }
+		if (storeData) {
+			window.localStorage.setItem('name', name)
+			window.localStorage.setItem('email', email)
+		} else {
+			window.localStorage.removeItem('name', name)
+			window.localStorage.removeItem('email', email)
+		}
 
-    submitComment(commentObj).then((res) => {
-				setShowSuccessMessage(true)
-				setTimeout(() => {
-					setShowSuccessMessage(false)
-				}, 3000)
-			}
-	)
-  }
-
+		submitComment(commentObj).then((res) => {
+			setShowSuccessMessage(true)
+			setTimeout(() => {
+				setShowSuccessMessage(false)
+			}, 3000)
+		})
+	}
 
 	return (
 		<div className='bg-white shadow-lg rounded-lg p-8 pb-12 mb-8'>
